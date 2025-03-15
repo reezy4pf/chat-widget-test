@@ -466,7 +466,7 @@
                     console.error('Error in startNewConversation:', error);
                     const errorDiv = document.createElement('div');
                     errorDiv.className = 'chat-message bot';
-                    errorDiv.textContent = 'Sorry, I couldn't connect to the server. Please try again or type your message below.';
+                    errorDiv.textContent = "Sorry, I couldn't connect to the server. Please try again or type your message below.";
                     messagesContainer.appendChild(errorDiv);
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 }
@@ -509,7 +509,7 @@
                     console.error('Error:', error);
                     const errorDiv = document.createElement('div');
                     errorDiv.className = 'chat-message bot';
-                    errorDiv.textContent = 'Sorry, I encountered an error. Please try again.';
+                    errorDiv.textContent = "Sorry, I encountered an error. Please try again.";
                     messagesContainer.appendChild(errorDiv);
                 }
             }
