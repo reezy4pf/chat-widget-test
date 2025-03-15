@@ -323,7 +323,7 @@
             z-index: 1000;
             display: none;
             width: 380px;
-            height: 650px; /* Increased container height to 650px */
+            height: 650px;
             background: var(--chat--color-background);
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(22, 48, 32, 0.2);
@@ -446,6 +446,7 @@
             display: none;
             flex-direction: column;
             height: 100%;
+            position: relative;
         }
 
         .n8n-chat-widget .chat-interface.active {
@@ -460,6 +461,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            padding-bottom: 85px; /* Make space for the fixed chat input */
         }
 
         .n8n-chat-widget .chat-message {
@@ -491,11 +493,16 @@
         }
 
         .n8n-chat-widget .chat-input {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
             padding: 16px;
             background: var(--chat--color-background);
             border-top: 1px solid rgba(22, 48, 32, 0.1);
             display: flex;
             gap: 8px;
+            z-index: 50;
         }
 
         .n8n-chat-widget .chat-input textarea {
@@ -509,6 +516,10 @@
             font-family: 'Poppins', sans-serif;
             font-size: 14px;
             transition: border-color 0.3s;
+            height: 50px;
+            min-height: 50px;
+            max-height: 100px;
+            overflow-y: auto;
         }
 
         .n8n-chat-widget .chat-input textarea:focus {
@@ -526,6 +537,7 @@
             border: none;
             border-radius: 8px;
             padding: 0 20px;
+            height: 50px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             font-family: 'Poppins', sans-serif;
@@ -580,6 +592,11 @@
             text-align: center;
             background: var(--chat--color-background);
             border-top: 1px solid rgba(22, 48, 32, 0.1);
+            position: absolute;
+            bottom: 85px; /* Position above the chat input */
+            left: 0;
+            right: 0;
+            z-index: 40;
         }
 
         .n8n-chat-widget .chat-footer a {
@@ -746,13 +763,18 @@
 
             const chatInterfaceHTML = `
                 <div class="chat-interface">
+                    <div class="brand-header">
+                        <img src="${config.branding.logo}" alt="${config.branding.name}">
+                        <span>${config.branding.name}</span>
+                        <button class="close-button">×</button>
+                    </div>
                     <div class="chat-messages"></div>
+                    <div class="chat-footer">
+                        <a href="${config.branding.poweredBy.link}" target="_blank">${config.branding.poweredBy.text}</a>
+                    </div>
                     <div class="chat-input">
                         <textarea placeholder="Type your message here..." rows="1"></textarea>
                         <button type="submit">Send</button>
-                    </div>
-                    <div class="chat-footer">
-                        <a href="${config.branding.poweredBy.link}" target="_blank">${config.branding.poweredBy.text}</a>
                     </div>
                 </div>
             `;
@@ -782,6 +804,13 @@
             const textarea = chatContainer.querySelector('textarea');
             const sendButton = chatContainer.querySelector('button[type="submit"]');
 
+            // Auto-resize textarea as user types
+            textarea.addEventListener('input', function() {
+                this.style.height = '50px';
+                const newHeight = Math.min(100, Math.max(50, this.scrollHeight));
+                this.style.height = newHeight + 'px';
+            });
+
             // Generate UUID
             function generateUUID() {
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -802,8 +831,6 @@
                     }
                 }];
             
-                chatContainer.querySelector('.brand-header').style.display = 'flex';
-                chatContainer.querySelector('.new-conversation').style.display = 'none';
                 chatInterface.classList.add('active');
             
                 try {
@@ -899,6 +926,7 @@
                 if (message) {
                     sendMessage(message);
                     textarea.value = '';
+                    textarea.style.height = '50px'; // Reset height after sending
                 }
             });
             
@@ -909,6 +937,7 @@
                     if (message) {
                         sendMessage(message);
                         textarea.value = '';
+                        textarea.style.height = '50px'; // Reset height after sending
                     }
                 }
             });
