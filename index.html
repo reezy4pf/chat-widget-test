@@ -323,7 +323,7 @@
             z-index: 1000;
             display: none;
             width: 380px;
-            height: 600px;
+            height: 650px; /* Increased container height by 50px */
             background: var(--chat--color-background);
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(22, 48, 32, 0.2);
@@ -509,8 +509,10 @@
             font-family: 'Poppins', sans-serif;
             font-size: 14px;
             transition: border-color 0.3s;
-            min-height: 50px;
-            height: 50px;
+            min-height: 50px; /* Increased minimum height to 50px */
+            height: auto; /* Let it grow if needed */
+            max-height: 120px; /* But not too much */
+            overflow-y: auto; /* Add scrollbar if needed */
         }
 
         .n8n-chat-widget .chat-input textarea:focus {
@@ -535,6 +537,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 50px; /* Match the textarea height */
         }
 
         .n8n-chat-widget .chat-input button:hover {
@@ -605,7 +608,7 @@
         <div class="hero-content">
             <h1>Embark on an Unforgettable Kenyan Safari</h1>
             <p>Experience the magic of Kenya with personalized safari adventures and 24/7 assistance from Simba, your AI safari guide</p>
-            <a href="#meet-simba" class="btn">Start a Chat</a>
+            <a href="#meet-simba" class="btn">Discover More</a>
         </div>
     </section>
     
@@ -750,7 +753,7 @@
                 <div class="chat-interface">
                     <div class="chat-messages"></div>
                     <div class="chat-input">
-                        <textarea placeholder="Type your message here..." rows="1"></textarea>
+                        <textarea placeholder="Type your message here..." rows="2"></textarea>
                         <button type="submit">Send</button>
                     </div>
                     <div class="chat-footer">
@@ -778,18 +781,17 @@
                 startNewConversation();
             });
 
-            // Link the hero section button to open the chat
-            document.querySelector('.hero .btn').addEventListener('click', function(e) {
-                e.preventDefault();
-                chatContainer.classList.add('open');
-                startNewConversation();
-            });
-
             const newChatBtn = chatContainer.querySelector('.new-chat-btn');
             const chatInterface = chatContainer.querySelector('.chat-interface');
             const messagesContainer = chatContainer.querySelector('.chat-messages');
             const textarea = chatContainer.querySelector('textarea');
             const sendButton = chatContainer.querySelector('button[type="submit"]');
+
+            // Auto-resize textarea as user types
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
 
             // Generate UUID
             function generateUUID() {
@@ -908,6 +910,7 @@
                 if (message) {
                     sendMessage(message);
                     textarea.value = '';
+                    textarea.style.height = '50px'; // Reset height after sending
                 }
             });
             
@@ -918,6 +921,7 @@
                     if (message) {
                         sendMessage(message);
                         textarea.value = '';
+                        textarea.style.height = '50px'; // Reset height after sending
                     }
                 }
             });
