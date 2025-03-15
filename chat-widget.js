@@ -189,7 +189,7 @@
         .n8n-chat-widget .chat-input textarea {
             flex: 1;
             padding: 12px;
-            border: 1px solidrgb(16, 77, 31);
+            border: 1px solid rgb(16, 77, 31);
             border-radius: 8px;
             background: var(--chat--color-background);
             color: var(--chat--color-font);
@@ -392,8 +392,19 @@
     const textarea = chatContainer.querySelector('textarea');
     const sendButton = chatContainer.querySelector('button[type="submit"]');
 
+    // Generate UUID function that works in all browsers
     function generateUUID() {
-        return crypto.randomUUID();
+        // If crypto.randomUUID is available, use it
+        if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+            return window.crypto.randomUUID();
+        }
+        
+        // Fallback implementation for browsers without crypto.randomUUID
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0,
+                  v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
     }
 
     async function startNewConversation() {
@@ -521,4 +532,15 @@
             chatContainer.classList.remove('open');
         });
     });
+
+    // Let the page know the script has initialized
+    console.log('Chat widget initialized successfully');
+
+    // Add a small delay for event listeners 
+    setTimeout(function() {
+        if (document.getElementById('script-status')) {
+            document.getElementById('script-status').textContent = 'Chat widget loaded successfully!';
+            document.getElementById('script-status').style.color = 'green';
+        }
+    }, 500);
 })();
