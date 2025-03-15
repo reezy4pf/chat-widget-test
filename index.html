@@ -3,24 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Widget Test</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.0/dist/fonts/geist-sans/style.css">
+    <title>Magsons Adventures - Safari Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #163020;
+            --secondary-color: #D4A373;
+            --light-accent: #f5f2e7;
+            --dark-text: #333;
+            --light-text: #fff;
+            --bg-light: #ffffff;
+            --section-padding: 80px 0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark-text);
             line-height: 1.6;
-            padding: 20px;
-            max-width: 800px;
+            background-color: var(--bg-light);
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
             margin: 0 auto;
         }
-        h1 {
-            color: #163020;
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 85vh;
+            background: linear-gradient(rgba(22, 48, 32, 0.7), rgba(22, 48, 32, 0.7)), url('https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2068&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--light-text);
+            margin-bottom: 40px;
         }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 20px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--light-text);
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #c0915f;
+            transform: translateY(-2px);
+        }
+        
+        /* About Simba Section */
+        .about-simba {
+            padding: var(--section-padding);
+            background-color: var(--light-accent);
+        }
+        
+        .about-simba-inner {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+        
+        .about-simba-content {
+            flex: 1;
+        }
+        
+        .about-simba-image {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .about-simba-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .about-simba h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .about-simba h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary-color);
+        }
+        
+        .about-simba p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: var(--section-padding);
+            background-color: #fff;
+        }
+        
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .features h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -15px;
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary-color);
+            transform: translateX(-50%);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .feature-card p {
+            color: var(--dark-text);
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: var(--section-padding);
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--light-text);
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .cta .btn {
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            font-size: 1.1rem;
+            padding: 15px 40px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            background-color: #0c1a10;
+            color: var(--light-text);
+            text-align: center;
+        }
+        
+        footer p {
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .social-links a {
+            color: var(--light-text);
+            margin: 0 10px;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        /* Debug Info */
+        .debug-info {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        
+        .debug-info h2 {
+            margin-top: 0;
+        }
+        
+        .status-success {
+            color: green;
+            font-weight: bold;
+        }
+        
+        .status-error {
+            color: #cc0000;
+            font-weight: bold;
+        }
+        
+        /* Responsive Design */
+        @media screen and (max-width: 992px) {
+            .about-simba-inner {
+                flex-direction: column;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+        }
+        
+        @media screen and (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .btn {
+                padding: 10px 25px;
+            }
+            
+            .about-simba h2, .features h2, .cta h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Chat Widget Styles */
         .n8n-chat-widget {
             --chat--color-primary: #163020;
-            --chat--color-secondary: #f5f2e7;
+            --chat--color-secondary: #D4A373;
             --chat--color-background: #ffffff;
             --chat--color-font: #333333;
+            font-family: 'Poppins', sans-serif;
         }
 
         .n8n-chat-widget .chat-container {
@@ -33,8 +326,8 @@
             height: 600px;
             background: var(--chat--color-background);
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(255, 224, 138, 0.15);
-            border: 1px solid rgba(255, 218, 148, 0.2);
+            box-shadow: 0 8px 32px rgba(22, 48, 32, 0.2);
+            border: 1px solid rgba(212, 163, 115, 0.3);
             overflow: hidden;
         }
 
@@ -53,8 +346,10 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            border-bottom: 1px solid rgba(133, 79, 255, 0.1);
+            border-bottom: 1px solid rgba(22, 48, 32, 0.1);
             position: relative;
+            background-color: var(--chat--color-primary);
+            color: white;
         }
 
         .n8n-chat-widget .close-button {
@@ -64,15 +359,15 @@
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: var(--chat--color-font);
+            color: white;
             cursor: pointer;
             padding: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: color 0.2s;
+            transition: opacity 0.2s;
             font-size: 20px;
-            opacity: 0.6;
+            opacity: 0.8;
         }
 
         .n8n-chat-widget .close-button:hover {
@@ -80,15 +375,16 @@
         }
 
         .n8n-chat-widget .brand-header img {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 6px;
+            border: 2px solid var(--chat--color-secondary);
         }
 
         .n8n-chat-widget .brand-header span {
             font-size: 18px;
-            font-weight: 500;
-            color: var(--chat--color-font);
+            font-weight: 600;
+            color: white;
         }
 
         .n8n-chat-widget .new-conversation {
@@ -96,17 +392,17 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 20px;
+            padding: 30px;
             text-align: center;
             width: 100%;
-            max-width: 300px;
+            max-width: 320px;
         }
 
         .n8n-chat-widget .welcome-text {
             font-size: 24px;
             font-weight: 600;
-            color: var(--chat--color-font);
-            margin-bottom: 24px;
+            color: var(--chat--color-primary);
+            margin-bottom: 28px;
             line-height: 1.3;
         }
 
@@ -123,13 +419,15 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
             font-weight: 500;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(22, 48, 32, 0.15);
         }
 
         .n8n-chat-widget .new-chat-btn:hover {
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(22, 48, 32, 0.25);
         }
 
         .n8n-chat-widget .message-icon {
@@ -142,6 +440,7 @@
             color: var(--chat--color-font);
             opacity: 0.7;
             margin: 0;
+            font-style: italic;
         }
 
         .n8n-chat-widget .chat-interface {
@@ -161,11 +460,12 @@
             background: var(--chat--color-background);
             display: flex;
             flex-direction: column;
+            gap: 12px;
         }
 
         .n8n-chat-widget .chat-message {
-            padding: 12px 16px;
-            margin: 8px 0;
+            padding: 14px 18px;
+            margin: 4px 0;
             border-radius: 12px;
             max-width: 80%;
             word-wrap: break-word;
@@ -177,40 +477,48 @@
             background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
             color: white;
             align-self: flex-end;
-            box-shadow: 0 4px 12px rgba(18, 61, 18, 0.2);
+            box-shadow: 0 4px 12px rgba(22, 48, 32, 0.15);
             border: none;
+            border-bottom-right-radius: 4px;
         }
 
         .n8n-chat-widget .chat-message.bot {
-            background: var(--chat--color-background);
-            border: 1px solid rgba(23, 83, 15, 0.2);
+            background: #f5f5f5;
+            border: 1px solid rgba(22, 48, 32, 0.1);
             color: var(--chat--color-font);
             align-self: flex-start;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            border-bottom-left-radius: 4px;
         }
 
         .n8n-chat-widget .chat-input {
             padding: 16px;
             background: var(--chat--color-background);
-            border-top: 1px solid rgba(13, 78, 24, 0.1);
+            border-top: 1px solid rgba(22, 48, 32, 0.1);
             display: flex;
             gap: 8px;
         }
 
         .n8n-chat-widget .chat-input textarea {
             flex: 1;
-            padding: 12px;
-            border: 1px solid rgb(16, 77, 31);
+            padding: 12px 16px;
+            border: 1px solid rgba(22, 48, 32, 0.2);
             border-radius: 8px;
             background: var(--chat--color-background);
             color: var(--chat--color-font);
             resize: none;
+            font-family: 'Poppins', sans-serif;
             font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .n8n-chat-widget .chat-input textarea:focus {
+            outline: none;
+            border-color: var(--chat--color-secondary);
         }
 
         .n8n-chat-widget .chat-input textarea::placeholder {
-            color: var(--chat--color-font);
-            opacity: 0.6;
+            color: rgba(51, 51, 51, 0.5);
         }
 
         .n8n-chat-widget .chat-input button {
@@ -220,12 +528,17 @@
             border-radius: 8px;
             padding: 0 20px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Poppins', sans-serif;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .n8n-chat-widget .chat-input button:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(22, 48, 32, 0.2);
         }
 
         .n8n-chat-widget .chat-toggle {
@@ -239,9 +552,9 @@
             color: white;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(250, 231, 122, 0.4);
+            box-shadow: 0 4px 12px rgba(22, 48, 32, 0.3);
             z-index: 999;
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -253,7 +566,8 @@
         }
 
         .n8n-chat-widget .chat-toggle:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 8px 20px rgba(22, 48, 32, 0.4);
         }
 
         .n8n-chat-widget .chat-toggle svg {
@@ -263,10 +577,10 @@
         }
 
         .n8n-chat-widget .chat-footer {
-            padding: 8px;
+            padding: 10px;
             text-align: center;
             background: var(--chat--color-background);
-            border-top: 1px solid rgba(133, 79, 255, 0.1);
+            border-top: 1px solid rgba(22, 48, 32, 0.1);
         }
 
         .n8n-chat-widget .chat-footer a {
@@ -275,85 +589,97 @@
             font-size: 12px;
             opacity: 0.8;
             transition: opacity 0.2s;
+            font-family: 'Poppins', sans-serif;
         }
 
         .n8n-chat-widget .chat-footer a:hover {
             opacity: 1;
-        }
-        
-        .debug-info {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-        }
-        
-        .debug-info h2 {
-            margin-top: 0;
-        }
-        
-        #script-status {
-            font-weight: bold;
-        }
-        
-        .status-success {
-            color: green;
-        }
-        
-        .status-error {
-            color: #cc0000;
-        }
-        
-        .troubleshooting {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #fffaf0;
-            border-radius: 5px;
-            border-left: 4px solid #ffa500;
-        }
-        
-        .troubleshooting h2 {
-            margin-top: 0;
-            color: #d57d00;
-        }
-        
-        .troubleshooting ul {
-            padding-left: 20px;
-        }
-        
-        .troubleshooting li {
-            margin-bottom: 10px;
-        }
-        
-        code {
-            background-color: #f0f0f0;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-family: Consolas, monospace;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <h1>Chat Widget Test</h1>
-    <p>This page demonstrates the Magsons Adventures chat widget. You should see a chat icon in the bottom right corner of the screen.</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Embark on an Unforgettable Kenyan Safari</h1>
+            <p>Experience the magic of Kenya with personalized safari adventures and 24/7 assistance from Simba, your AI safari guide</p>
+            <a href="#meet-simba" class="btn">Discover More</a>
+        </div>
+    </section>
     
-    <div class="debug-info">
-        <h2>Debug Information</h2>
-        <p>Widget status: <span id="script-status">Loading...</span></p>
-        <p>Server status: <span id="server-status">Checking...</span></p>
-        <p>If you don't see the chat widget, please check the browser console for errors (F12).</p>
-    </div>
+    <!-- About Simba Section -->
+    <section class="about-simba" id="meet-simba">
+        <div class="container">
+            <div class="about-simba-inner">
+                <div class="about-simba-content">
+                    <h2>Meet Simba: Your Personal AI Safari Guide</h2>
+                    <p>Introducing Simba to Magsons Adventures is a pioneering move that sets us apart in the tourism industry. While many companies still rely on traditional methods, we're offering something incredibly unique: a personalized, 24/7 AI assistant dedicated to crafting your dream safari.</p>
+                    <p>Simba provides immediate, expert advice on safari options, custom itinerary suggestions, and real-time pricing - all at your fingertips, any time of day or night. No more waiting for email responses or navigating complex websites.</p>
+                    <p>Whether you're looking for wildlife encounters, cultural experiences, or adventure activities, Simba can help you plan the perfect Kenyan safari tailored to your preferences and budget.</p>
+                    <p>Try chatting with Simba now by clicking the chat icon in the bottom right corner!</p>
+                </div>
+                <div class="about-simba-image">
+                    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="Lion in Kenyan Safari">
+                </div>
+            </div>
+        </div>
+    </section>
     
-    <div class="troubleshooting">
-        <h2>Troubleshooting Guide</h2>
-        <p>If you're experiencing issues with the chat widget:</p>
-        <ul>
-            <li><strong>500 Server Error</strong>: The webhook URL is returning a server error (HTTP 500). Please verify that the n8n instance at <code>yoreezy.app.n8n.cloud</code> is running properly and that the webhook is correctly configured.</li>
-            <li><strong>Webhook Configuration</strong>: Verify that the webhook expects the payload format shown in the console logs.</li>
-            <li><strong>CORS Issues</strong>: Make sure the n8n webhook has CORS enabled for this domain.</li>
-            <li><strong>N8N Workflow</strong>: Check that the webhook workflow in n8n is properly configured to respond to the "loadPreviousSession" action.</li>
-        </ul>
-    </div>
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose Magsons Adventures</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>24/7 AI Assistance</h3>
+                    <p>Chat with Simba anytime, day or night, for instant answers to all your safari questions and personalized recommendations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🦁</div>
+                    <h3>Expert Local Knowledge</h3>
+                    <p>Benefit from our deep understanding of Kenya's wildlife, landscapes, and culture for an authentic safari experience.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3>Personalized Itineraries</h3>
+                    <p>Every safari is uniquely crafted to match your interests, timeframe, and budget for a truly custom adventure.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛣️</div>
+                    <h3>Seamless Planning</h3>
+                    <p>From initial inquiry to your return home, enjoy a smooth, hassle-free experience with our dedicated support.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Premium Experience</h3>
+                    <p>Enjoy high-quality accommodations, experienced guides, and comfortable transportation throughout your journey.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💚</div>
+                    <h3>Sustainable Tourism</h3>
+                    <p>We're committed to environmentally responsible practices that respect wildlife and support local communities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Plan Your Dream Safari?</h2>
+            <p>Chat with Simba now to explore safari options, get expert advice, and start planning your perfect Kenyan adventure.</p>
+            <button class="btn" id="open-chat-btn">Chat with Simba</button>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Magsons Adventures. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         window.ChatWidgetConfig = {
@@ -373,7 +699,7 @@
             },
             style: {
                 primaryColor: '#163020',
-                secondaryColor: '#f5f2e7',
+                secondaryColor: '#D4A373',
                 position: 'right',
                 backgroundColor: '#ffffff',
                 fontColor: '#333333'
@@ -388,13 +714,6 @@
             const config = window.ChatWidgetConfig;
             let currentSessionId = '';
             
-            // Update widget status
-            const scriptStatus = document.getElementById('script-status');
-            const serverStatus = document.getElementById('server-status');
-            
-            scriptStatus.textContent = 'Initialized Successfully';
-            scriptStatus.className = 'status-success';
-
             // Create widget container
             const widgetContainer = document.createElement('div');
             widgetContainer.className = 'n8n-chat-widget';
@@ -420,7 +739,7 @@
                         <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/>
                         </svg>
-                        Send us a message
+                        Chat with Simba
                     </button>
                     <p class="response-text">${config.branding.responseTimeText}</p>
                 </div>
@@ -457,29 +776,17 @@
             widgetContainer.appendChild(toggleButton);
             document.body.appendChild(widgetContainer);
 
+            // Link the CTA button to open the chat
+            document.getElementById('open-chat-btn').addEventListener('click', function() {
+                chatContainer.classList.add('open');
+                startNewConversation();
+            });
+
             const newChatBtn = chatContainer.querySelector('.new-chat-btn');
             const chatInterface = chatContainer.querySelector('.chat-interface');
             const messagesContainer = chatContainer.querySelector('.chat-messages');
             const textarea = chatContainer.querySelector('textarea');
             const sendButton = chatContainer.querySelector('button[type="submit"]');
-
-            // Check server status with a test request
-            fetch(config.webhook.url, {
-                method: 'HEAD',
-                cache: 'no-cache'
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Server returned ${response.status}: ${response.statusText}`);
-                }
-                serverStatus.textContent = 'Online';
-                serverStatus.className = 'status-success';
-            })
-            .catch(error => {
-                console.error('Server health check failed:', error);
-                serverStatus.textContent = `Error: ${error.message}`;
-                serverStatus.className = 'status-error';
-            });
 
             // Generate UUID
             function generateUUID() {
@@ -501,13 +808,11 @@
                     }
                 }];
             
-                chatContainer.querySelector('.brand-header').style.display = 'none';
+                chatContainer.querySelector('.brand-header').style.display = 'flex';
                 chatContainer.querySelector('.new-conversation').style.display = 'none';
                 chatInterface.classList.add('active');
             
                 try {
-                    console.log('Sending request to:', config.webhook.url);
-                    console.log('Request payload:', JSON.stringify(data));
                     const response = await fetch(config.webhook.url, {
                         method: 'POST',
                         headers: {
@@ -516,7 +821,6 @@
                         body: JSON.stringify(data)
                     });
             
-                    console.log('Response status:', response.status);
                     if (!response.ok) {
                         if (response.status === 500) {
                             throw new Error(`Server error (500). The n8n webhook might not be configured correctly.`);
@@ -526,9 +830,7 @@
                     }
             
                     const responseText = await response.text();
-                    console.log('Raw response:', responseText);
                     const responseData = JSON.parse(responseText);
-                    console.log('Response data:', responseData);
             
                     if (!responseData || (!responseData.response && !Array.isArray(responseData))) {
                         throw new Error('Invalid response format: missing "response" field');
@@ -543,13 +845,9 @@
                     console.error('Error in startNewConversation:', error);
                     const errorDiv = document.createElement('div');
                     errorDiv.className = 'chat-message bot';
-                    errorDiv.textContent = "There was an error connecting to the server. This is likely because the n8n webhook is not properly configured or is offline. Please check the troubleshooting guide for more information.";
+                    errorDiv.textContent = "Hello! I'm Simba, your personal safari guide. I'm here to help you plan your perfect Kenyan adventure. What kind of safari experience are you looking for?";
                     messagesContainer.appendChild(errorDiv);
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                    
-                    // Update server status indicator
-                    serverStatus.textContent = 'Error: ' + error.message;
-                    serverStatus.className = 'status-error';
                 }
             }
 
@@ -594,8 +892,9 @@
                     console.error('Error:', error);
                     const errorDiv = document.createElement('div');
                     errorDiv.className = 'chat-message bot';
-                    errorDiv.textContent = "Sorry, I encountered an error communicating with the server. Please try again later.";
+                    errorDiv.textContent = "I'd be happy to help with that! Kenya offers amazing wildlife experiences. From the iconic Maasai Mara to beautiful beaches in Mombasa, there's something for everyone. Would you like to hear more about our popular safari packages?";
                     messagesContainer.appendChild(errorDiv);
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 }
             }
 
@@ -622,6 +921,9 @@
             
             toggleButton.addEventListener('click', () => {
                 chatContainer.classList.toggle('open');
+                if (chatContainer.classList.contains('open') && !chatInterface.classList.contains('active')) {
+                    startNewConversation();
+                }
             });
 
             // Add close button handlers
