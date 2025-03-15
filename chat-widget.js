@@ -306,7 +306,7 @@
     const chatContainer = document.createElement('div');
     chatContainer.className = `chat-container${config.style.position === 'left' ? ' position-left' : ''}`;
     
-    // Create chat interface directly (removed welcome page)
+    // Create chat interface directly
     const chatInterface = document.createElement('div');
     chatInterface.className = 'chat-interface';
     chatInterface.innerHTML = `
