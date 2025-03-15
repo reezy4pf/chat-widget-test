@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Widget Test</title>
+</head>
+<body>
+    <h1>Chat Widget Test</h1>
+    <script>
+        window.ChatWidgetConfig = {
+            webhook: {
+                url: 'https://yoreezy.app.n8n.cloud/webhook/981f76af-574b-49ec-9ac1-82de5d264a1c/chat',
+                route: 'general'
+            },
+            branding: {
+                logo: 'https://magsonsadventures.com/wp-content/uploads/2025/01/cropped-MAGSONS-ADVENTURE-SAFARIS-LOGO-bg-min.png',
+                name: 'Magsons Adventures',
+                welcomeText: 'Hi 👋, how can we help?',
+                responseTimeText: 'We typically respond right away'
+            },
+            style: {
+                primaryColor: '#163020',
+                secondaryColor: '#f5f2e7',
+                position: 'right',
+                backgroundColor: '#ffffff',
+                fontColor: '#333333'
+            }
+        };
+    </script>
+    <script src="chat-widget.js"></script>
+</body>
+</html>
