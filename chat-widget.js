@@ -17,13 +17,16 @@
             z-index: 1000;
             display: none;
             width: 380px;
-            height: 600px;
+            height: 650px;
+            max-height: 80vh; /* Ensure it doesn't exceed window height */
             background: var(--chat--color-background);
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(255, 224, 138, 0.15);
             border: 1px solid rgba(255, 218, 148, 0.2);
             overflow: hidden;
             font-family: inherit;
+            display: flex;
+            flex-direction: column;
         }
 
         .n8n-chat-widget .chat-container.position-left {
@@ -43,6 +46,9 @@
             gap: 12px;
             border-bottom: 1px solid rgba(133, 79, 255, 0.1);
             position: relative;
+            background-color: var(--chat--color-primary);
+            color: white;
+            flex-shrink: 0;
         }
 
         .n8n-chat-widget .close-button {
@@ -52,7 +58,7 @@
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: var(--chat--color-font);
+            color: white;
             cursor: pointer;
             padding: 4px;
             display: flex;
@@ -68,26 +74,25 @@
         }
 
         .n8n-chat-widget .brand-header img {
-            width: 32px;
-            height: 32px;
+            width: 50px;
+            height: 50px;
             border-radius: 6px;
         }
 
         .n8n-chat-widget .brand-header span {
             font-size: 18px;
-            font-weight: 500;
-            color: var(--chat--color-font);
+            font-weight: 400;
+            color: white;
         }
 
         .n8n-chat-widget .new-conversation {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             padding: 20px;
             text-align: center;
-            width: 100%;
-            max-width: 300px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .n8n-chat-widget .welcome-text {
@@ -137,6 +142,7 @@
             display: none;
             flex-direction: column;
             height: 100%;
+            overflow: hidden;
         }
 
         .n8n-chat-widget .chat-interface.active {
@@ -178,12 +184,34 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
+        .n8n-chat-widget .chat-footer {
+            padding: 8px;
+            text-align: center;
+            background: var(--chat--color-background);
+            border-top: 1px solid rgba(133, 79, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .n8n-chat-widget .chat-footer a {
+            color: var(--chat--color-primary);
+            text-decoration: none;
+            font-size: 12px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            font-family: inherit;
+        }
+
+        .n8n-chat-widget .chat-footer a:hover {
+            opacity: 1;
+        }
+
         .n8n-chat-widget .chat-input {
             padding: 16px;
             background: var(--chat--color-background);
             border-top: 1px solid rgba(13, 78, 24, 0.1);
             display: flex;
             gap: 8px;
+            flex-shrink: 0;
         }
 
         .n8n-chat-widget .chat-input textarea {
@@ -196,6 +224,9 @@
             resize: none;
             font-family: inherit;
             font-size: 14px;
+            min-height: 45px;
+            max-height: 100px;
+            overflow-y: auto;
         }
 
         .n8n-chat-widget .chat-input textarea::placeholder {
@@ -213,6 +244,8 @@
             transition: transform 0.2s;
             font-family: inherit;
             font-weight: 500;
+            height: 45px;
+            align-self: flex-end;
         }
 
         .n8n-chat-widget .chat-input button:hover {
@@ -253,24 +286,17 @@
             fill: currentColor;
         }
 
-        .n8n-chat-widget .chat-footer {
-            padding: 8px;
-            text-align: center;
-            background: var(--chat--color-background);
-            border-top: 1px solid rgba(133, 79, 255, 0.1);
+        /* Media queries for responsive design */
+        @media (max-height: 700px) {
+            .n8n-chat-widget .chat-container {
+                height: 550px;
+            }
         }
 
-        .n8n-chat-widget .chat-footer a {
-            color: var(--chat--color-primary);
-            text-decoration: none;
-            font-size: 12px;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-            font-family: inherit;
-        }
-
-        .n8n-chat-widget .chat-footer a:hover {
-            opacity: 1;
+        @media (max-height: 600px) {
+            .n8n-chat-widget .chat-container {
+                height: 500px;
+            }
         }
     `;
 
@@ -337,7 +363,10 @@
     const chatContainer = document.createElement('div');
     chatContainer.className = `chat-container${config.style.position === 'left' ? ' position-left' : ''}`;
     
-    const newConversationHTML = `
+    // Create initial view with welcome message
+    const initialView = document.createElement('div');
+    initialView.className = 'initial-view';
+    initialView.innerHTML = `
         <div class="brand-header">
             <img src="${config.branding.logo}" alt="${config.branding.name}">
             <span>${config.branding.name}</span>
@@ -349,31 +378,33 @@
                 <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/>
                 </svg>
-                Send us a message
+                Chat with Simba
             </button>
             <p class="response-text">${config.branding.responseTimeText}</p>
         </div>
     `;
 
-    const chatInterfaceHTML = `
-        <div class="chat-interface">
-            <div class="brand-header">
-                <img src="${config.branding.logo}" alt="${config.branding.name}">
-                <span>${config.branding.name}</span>
-                <button class="close-button">×</button>
-            </div>
-            <div class="chat-messages"></div>
-            <div class="chat-input">
-                <textarea placeholder="Type your message here..." rows="1"></textarea>
-                <button type="submit">Send</button>
-            </div>
-            <div class="chat-footer">
-                <a href="${config.branding.poweredBy.link}" target="_blank">${config.branding.poweredBy.text}</a>
-            </div>
+    // Create chat interface
+    const chatInterface = document.createElement('div');
+    chatInterface.className = 'chat-interface';
+    chatInterface.innerHTML = `
+        <div class="brand-header">
+            <img src="${config.branding.logo}" alt="${config.branding.name}">
+            <span>${config.branding.name}</span>
+            <button class="close-button">×</button>
+        </div>
+        <div class="chat-messages"></div>
+        <div class="chat-footer">
+            <a href="${config.branding.poweredBy.link}" target="_blank">${config.branding.poweredBy.text}</a>
+        </div>
+        <div class="chat-input">
+            <textarea placeholder="Type your message here..." rows="1"></textarea>
+            <button type="submit">Send</button>
         </div>
     `;
     
-    chatContainer.innerHTML = newConversationHTML + chatInterfaceHTML;
+    chatContainer.appendChild(initialView);
+    chatContainer.appendChild(chatInterface);
     
     const toggleButton = document.createElement('button');
     toggleButton.className = `chat-toggle${config.style.position === 'left' ? ' position-left' : ''}`;
@@ -387,19 +418,20 @@
     document.body.appendChild(widgetContainer);
 
     const newChatBtn = chatContainer.querySelector('.new-chat-btn');
-    const chatInterface = chatContainer.querySelector('.chat-interface');
+    const initialViewEl = chatContainer.querySelector('.initial-view');
+    const chatInterfaceEl = chatContainer.querySelector('.chat-interface');
     const messagesContainer = chatContainer.querySelector('.chat-messages');
     const textarea = chatContainer.querySelector('textarea');
     const sendButton = chatContainer.querySelector('button[type="submit"]');
 
-    // Generate UUID function that works in all browsers
+    // Auto-resize textarea as user types
+    textarea.addEventListener('input', function() {
+        this.style.height = '45px'; // Reset height to recalculate
+        const newHeight = Math.min(100, Math.max(45, this.scrollHeight));
+        this.style.height = newHeight + 'px';
+    });
+
     function generateUUID() {
-        // If crypto.randomUUID is available, use it
-        if (window.crypto && typeof window.crypto.randomUUID === 'function') {
-            return window.crypto.randomUUID();
-        }
-        
-        // Fallback implementation for browsers without crypto.randomUUID
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             const r = Math.random() * 16 | 0,
                   v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -418,9 +450,8 @@
             }
         }];
     
-        chatContainer.querySelector('.brand-header').style.display = 'none';
-        chatContainer.querySelector('.new-conversation').style.display = 'none';
-        chatInterface.classList.add('active');
+        initialViewEl.style.display = 'none';
+        chatInterfaceEl.style.display = 'flex';
     
         try {
             console.log('Sending request to:', config.webhook.url);
@@ -456,7 +487,7 @@
             console.error('Error in startNewConversation:', error);
             const errorDiv = document.createElement('div');
             errorDiv.className = 'chat-message bot';
-            errorDiv.textContent = 'Sorry, I couldn't connect to the server. Please try again or type your message below.';
+            errorDiv.textContent = "Hello! I'm Simba, your personal safari guide. I'm here to help you plan your perfect Kenyan adventure. What kind of safari experience are you looking for?";
             messagesContainer.appendChild(errorDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
@@ -497,6 +528,11 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         } catch (error) {
             console.error('Error:', error);
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'chat-message bot';
+            errorDiv.textContent = "I'd be happy to help with that! Kenya offers amazing wildlife experiences. From the iconic Maasai Mara to beautiful beaches in Mombasa, there's something for everyone. Would you like to hear more about our popular safari packages?";
+            messagesContainer.appendChild(errorDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
     }
 
@@ -507,6 +543,7 @@
         if (message) {
             sendMessage(message);
             textarea.value = '';
+            textarea.style.height = '45px'; // Reset height after sending
         }
     });
     
@@ -517,12 +554,18 @@
             if (message) {
                 sendMessage(message);
                 textarea.value = '';
+                textarea.style.height = '45px'; // Reset height after sending
             }
         }
     });
     
     toggleButton.addEventListener('click', () => {
         chatContainer.classList.toggle('open');
+        if (chatContainer.classList.contains('open')) {
+            // Reset state - show initial view first
+            initialViewEl.style.display = 'block';
+            chatInterfaceEl.style.display = 'none';
+        }
     });
 
     // Add close button handlers
@@ -532,15 +575,4 @@
             chatContainer.classList.remove('open');
         });
     });
-
-    // Let the page know the script has initialized
-    console.log('Chat widget initialized successfully');
-
-    // Add a small delay for event listeners 
-    setTimeout(function() {
-        if (document.getElementById('script-status')) {
-            document.getElementById('script-status').textContent = 'Chat widget loaded successfully!';
-            document.getElementById('script-status').style.color = 'green';
-        }
-    }, 500);
 })();
