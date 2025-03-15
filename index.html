@@ -605,7 +605,7 @@
         <div class="hero-content">
             <h1>Embark on an Unforgettable Kenyan Safari</h1>
             <p>Experience the magic of Kenya with personalized safari adventures and 24/7 assistance from Simba, your AI safari guide</p>
-            <a href="#meet-simba" class="btn">Discover More</a>
+            <a href="#meet-simba" class="btn">Start a Chat</a>
         </div>
     </section>
     
@@ -774,6 +774,13 @@
 
             // Link the CTA button to open the chat
             document.getElementById('open-chat-btn').addEventListener('click', function() {
+                chatContainer.classList.add('open');
+                startNewConversation();
+            });
+
+            // Link the hero section button to open the chat
+            document.querySelector('.hero .btn').addEventListener('click', function(e) {
+                e.preventDefault();
                 chatContainer.classList.add('open');
                 startNewConversation();
             });
