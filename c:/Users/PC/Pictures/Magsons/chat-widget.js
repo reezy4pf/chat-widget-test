@@ -17,9 +17,8 @@
             z-index: 1000;
             display: none;
             width: 380px;
-            height: 80vh; /* Viewport-based height */
-            max-height: 650px; /* Maximum height */
-            min-height: 400px; /* Minimum height */
+            height: 650px;
+            max-height: 80vh; /* Ensure it doesn't exceed window height */
             background: var(--chat--color-background);
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(255, 224, 138, 0.15);
@@ -45,7 +44,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            border-bottom: 1px solid rgba(22, 48, 32, 0.1);
+            border-bottom: 1px solid rgba(133, 79, 255, 0.1);
             position: relative;
             background-color: var(--chat--color-primary);
             color: white;
@@ -87,19 +86,19 @@
         }
 
         .n8n-chat-widget .new-conversation {
+            padding: 20px;
+            text-align: center;
             flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            padding: 20px;
-            text-align: center;
+            align-items: center;
         }
 
         .n8n-chat-widget .welcome-text {
             font-size: 24px;
             font-weight: 600;
-            color: var(--chat--color-primary);
+            color: var(--chat--color-font);
             margin-bottom: 24px;
             line-height: 1.3;
         }
@@ -110,7 +109,6 @@
             justify-content: center;
             gap: 8px;
             width: 100%;
-            max-width: 300px;
             padding: 16px 24px;
             background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
             color: white;
@@ -158,7 +156,6 @@
             background: var(--chat--color-background);
             display: flex;
             flex-direction: column;
-            gap: 12px;
         }
 
         .n8n-chat-widget .chat-message {
@@ -177,19 +174,38 @@
             align-self: flex-end;
             box-shadow: 0 4px 12px rgba(18, 61, 18, 0.2);
             border: none;
-            border-bottom-right-radius: 4px;
         }
 
         .n8n-chat-widget .chat-message.bot {
-            background: #f5f5f5;
+            background: var(--chat--color-background);
             border: 1px solid rgba(23, 83, 15, 0.2);
             color: var(--chat--color-font);
             align-self: flex-start;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-bottom-left-radius: 4px;
         }
 
-        .n8n-chat-widget .chat-input-container {
+        .n8n-chat-widget .chat-footer {
+            padding: 8px;
+            text-align: center;
+            background: var(--chat--color-background);
+            border-top: 1px solid rgba(133, 79, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .n8n-chat-widget .chat-footer a {
+            color: var(--chat--color-primary);
+            text-decoration: none;
+            font-size: 12px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            font-family: inherit;
+        }
+
+        .n8n-chat-widget .chat-footer a:hover {
+            opacity: 1;
+        }
+
+        .n8n-chat-widget .chat-input {
             padding: 16px;
             background: var(--chat--color-background);
             border-top: 1px solid rgba(13, 78, 24, 0.1);
@@ -198,32 +214,27 @@
             flex-shrink: 0;
         }
 
-        .n8n-chat-widget .chat-input {
+        .n8n-chat-widget .chat-input textarea {
             flex: 1;
             padding: 12px;
-            border: 1px solid rgba(22, 48, 32, 0.2);
+            border: 1px solid rgb(16, 77, 31);
             border-radius: 8px;
             background: var(--chat--color-background);
             color: var(--chat--color-font);
             resize: none;
             font-family: inherit;
             font-size: 14px;
-            min-height: 50px;
+            min-height: 45px;
             max-height: 100px;
             overflow-y: auto;
         }
 
-        .n8n-chat-widget .chat-input::placeholder {
+        .n8n-chat-widget .chat-input textarea::placeholder {
             color: var(--chat--color-font);
             opacity: 0.6;
         }
 
-        .n8n-chat-widget .chat-input:focus {
-            outline: none;
-            border-color: var(--chat--color-secondary);
-        }
-
-        .n8n-chat-widget .send-button {
+        .n8n-chat-widget .chat-input button {
             background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
             color: white;
             border: none;
@@ -233,14 +244,11 @@
             transition: transform 0.2s;
             font-family: inherit;
             font-weight: 500;
-            height: 50px;
-            min-width: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: 45px;
+            align-self: flex-end;
         }
 
-        .n8n-chat-widget .send-button:hover {
+        .n8n-chat-widget .chat-input button:hover {
             transform: scale(1.05);
         }
 
@@ -255,7 +263,7 @@
             color: white;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(22, 48, 32, 0.3);
+            box-shadow: 0 4px 12px rgba(250, 231, 122, 0.4);
             z-index: 999;
             transition: transform 0.3s;
             display: flex;
@@ -278,60 +286,21 @@
             fill: currentColor;
         }
 
-        .n8n-chat-widget .chat-footer {
-            padding: 8px;
-            text-align: center;
-            background: var(--chat--color-background);
-            border-top: 1px solid rgba(22, 48, 32, 0.1);
-            flex-shrink: 0;
-        }
-
-        .n8n-chat-widget .chat-footer a {
-            color: var(--chat--color-primary);
-            text-decoration: none;
-            font-size: 12px;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-            font-family: inherit;
-        }
-
-        .n8n-chat-widget .chat-footer a:hover {
-            opacity: 1;
-        }
-
-        /* Responsive adjustments */
+        /* Media queries for responsive design */
         @media (max-height: 700px) {
             .n8n-chat-widget .chat-container {
-                height: 70vh;
-                min-height: 350px;
-            }
-            
-            .n8n-chat-widget .brand-header {
-                padding: 10px 16px;
-            }
-            
-            .n8n-chat-widget .chat-input-container {
-                padding: 10px;
-            }
-            
-            .n8n-chat-widget .chat-input {
-                min-height: 40px;
-            }
-            
-            .n8n-chat-widget .send-button {
-                height: 40px;
+                height: 550px;
             }
         }
 
-        @media (max-height: 500px) {
+        @media (max-height: 600px) {
             .n8n-chat-widget .chat-container {
-                height: 90vh;
-                min-height: 300px;
+                height: 500px;
             }
         }
     `;
 
-    // Load font
+    // Load Geist font
     const fontLink = document.createElement('link');
     fontLink.rel = 'stylesheet';
     fontLink.href = 'https://cdn.jsdelivr.net/npm/geist@1.0.0/dist/fonts/geist-sans/style.css';
@@ -394,8 +363,10 @@
     const chatContainer = document.createElement('div');
     chatContainer.className = `chat-container${config.style.position === 'left' ? ' position-left' : ''}`;
     
-    // Welcome screen
-    const welcomeScreenHTML = `
+    // Create initial view with welcome message
+    const initialView = document.createElement('div');
+    initialView.className = 'initial-view';
+    initialView.innerHTML = `
         <div class="brand-header">
             <img src="${config.branding.logo}" alt="${config.branding.name}">
             <span>${config.branding.name}</span>
@@ -412,27 +383,29 @@
             <p class="response-text">${config.branding.responseTimeText}</p>
         </div>
     `;
-    
-    // Chat interface
-    const chatInterfaceHTML = `
-        <div class="chat-interface">
-            <div class="brand-header">
-                <img src="${config.branding.logo}" alt="${config.branding.name}">
-                <span>${config.branding.name}</span>
-                <button class="close-button">×</button>
-            </div>
-            <div class="chat-messages"></div>
-            <div class="chat-footer">
-                <a href="${config.branding.poweredBy.link}" target="_blank">${config.branding.poweredBy.text}</a>
-            </div>
-            <div class="chat-input-container">
-                <textarea class="chat-input" placeholder="Type your message here..." rows="1"></textarea>
-                <button class="send-button" type="submit">Send</button>
-            </div>
+
+    // Create chat interface
+    const chatInterface = document.createElement('div');
+    chatInterface.className = 'chat-interface';
+    chatInterface.innerHTML = `
+        <div class="brand-header">
+            <img src="${config.branding.logo}" alt="${config.branding.name}">
+            <span>${config.branding.name}</span>
+            <button class="close-button">×</button>
+        </div>
+        <div class="chat-messages"></div>
+        <div class="chat-footer">
+            <a href="${config.branding.poweredBy.link}" target="_blank">${config.branding.poweredBy.text}</a>
+        </div>
+        <div class="chat-input">
+            <textarea placeholder="Type your message here..." rows="1"></textarea>
+            <button type="submit">Send</button>
         </div>
     `;
-
-    // Create toggle button
+    
+    chatContainer.appendChild(initialView);
+    chatContainer.appendChild(chatInterface);
+    
     const toggleButton = document.createElement('button');
     toggleButton.className = `chat-toggle${config.style.position === 'left' ? ' position-left' : ''}`;
     toggleButton.innerHTML = `
@@ -440,22 +413,24 @@
             <path d="M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2.5 21.5l4.5-.838A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.476 0-2.886-.313-4.156-.878l-3.156.586.586-3.156A7.962 7.962 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/>
         </svg>`;
     
-    // Initial state: show welcome screen
-    chatContainer.innerHTML = welcomeScreenHTML;
-    
     widgetContainer.appendChild(chatContainer);
     widgetContainer.appendChild(toggleButton);
     document.body.appendChild(widgetContainer);
 
-    // Get DOM elements
-    const welcomeScreen = chatContainer.querySelector('.new-conversation');
     const newChatBtn = chatContainer.querySelector('.new-chat-btn');
-    const chatInterface = document.createElement('div');
-    chatInterface.innerHTML = chatInterfaceHTML;
-    chatInterface.className = 'chat-interface';
-    chatInterface.style.display = 'none';
+    const initialViewEl = chatContainer.querySelector('.initial-view');
+    const chatInterfaceEl = chatContainer.querySelector('.chat-interface');
+    const messagesContainer = chatContainer.querySelector('.chat-messages');
+    const textarea = chatContainer.querySelector('textarea');
+    const sendButton = chatContainer.querySelector('button[type="submit"]');
 
-    // Generate UUID function
+    // Auto-resize textarea as user types
+    textarea.addEventListener('input', function() {
+        this.style.height = '45px'; // Reset height to recalculate
+        const newHeight = Math.min(100, Math.max(45, this.scrollHeight));
+        this.style.height = newHeight + 'px';
+    });
+
     function generateUUID() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             const r = Math.random() * 16 | 0,
@@ -464,26 +439,8 @@
         });
     }
 
-    // Start new conversation
     async function startNewConversation() {
         currentSessionId = generateUUID();
-        
-        // Switch from welcome screen to chat interface
-        welcomeScreen.style.display = 'none';
-        
-        // Add chat interface if not already added
-        if (!chatContainer.contains(chatInterface)) {
-            chatContainer.appendChild(chatInterface);
-        }
-        
-        // Show chat interface
-        chatInterface.style.display = 'flex';
-        
-        const messagesContainer = chatInterface.querySelector('.chat-messages');
-        
-        // Clear previous messages
-        messagesContainer.innerHTML = '';
-        
         const data = [{
             action: "loadPreviousSession",
             sessionId: currentSessionId,
@@ -493,8 +450,12 @@
             }
         }];
     
+        initialViewEl.style.display = 'none';
+        chatInterfaceEl.style.display = 'flex';
+    
         try {
             console.log('Sending request to:', config.webhook.url);
+            console.log('Request payload:', JSON.stringify(data));
             const response = await fetch(config.webhook.url, {
                 method: 'POST',
                 headers: {
@@ -503,15 +464,18 @@
                 body: JSON.stringify(data)
             });
     
+            console.log('Response status:', response.status);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
     
             const responseText = await response.text();
+            console.log('Raw response:', responseText);
             const responseData = JSON.parse(responseText);
+            console.log('Response data:', responseData);
     
             if (!responseData || (!responseData.response && !Array.isArray(responseData))) {
-                throw new Error('Invalid response format');
+                throw new Error('Invalid response format: missing "response" field');
             }
     
             const botMessageDiv = document.createElement('div');
@@ -529,9 +493,7 @@
         }
     }
 
-    // Send message function
     async function sendMessage(message) {
-        const messagesContainer = chatInterface.querySelector('.chat-messages');
         const messageData = {
             action: "sendMessage",
             sessionId: currentSessionId,
@@ -557,10 +519,6 @@
                 body: JSON.stringify(messageData)
             });
             
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            
             const data = await response.json();
             
             const botMessageDiv = document.createElement('div');
@@ -578,60 +536,43 @@
         }
     }
 
-    // Event listener for starting conversation
     newChatBtn.addEventListener('click', startNewConversation);
     
-    // Event listener for sending message
-    chatInterface.querySelector('.send-button').addEventListener('click', () => {
-        const textarea = chatInterface.querySelector('.chat-input');
+    sendButton.addEventListener('click', () => {
         const message = textarea.value.trim();
         if (message) {
             sendMessage(message);
             textarea.value = '';
-            textarea.style.height = 'auto';
+            textarea.style.height = '45px'; // Reset height after sending
         }
     });
     
-    // Event listener for Enter key
-    chatInterface.querySelector('.chat-input').addEventListener('keypress', (e) => {
+    textarea.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            const message = e.target.value.trim();
+            const message = textarea.value.trim();
             if (message) {
                 sendMessage(message);
-                e.target.value = '';
-                e.target.style.height = 'auto';
+                textarea.value = '';
+                textarea.style.height = '45px'; // Reset height after sending
             }
         }
     });
     
-    // Textarea auto-resize
-    chatInterface.querySelector('.chat-input').addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = (Math.min(100, Math.max(50, this.scrollHeight))) + 'px';
-    });
-    
-    // Toggle chat open/close
     toggleButton.addEventListener('click', () => {
-        const isOpen = chatContainer.classList.toggle('open');
-        if (isOpen && !chatContainer.contains(chatInterface)) {
-            startNewConversation();
+        chatContainer.classList.toggle('open');
+        if (chatContainer.classList.contains('open')) {
+            // Reset state - show initial view first
+            initialViewEl.style.display = 'block';
+            chatInterfaceEl.style.display = 'none';
         }
     });
 
-    // Close chat on close button click
+    // Add close button handlers
     const closeButtons = chatContainer.querySelectorAll('.close-button');
     closeButtons.forEach(button => {
         button.addEventListener('click', () => {
             chatContainer.classList.remove('open');
         });
-    });
-
-    // Handle window resize events for responsive layout
-    window.addEventListener('resize', () => {
-        const messagesContainer = chatInterface.querySelector('.chat-messages');
-        if (messagesContainer) {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
     });
 })();
