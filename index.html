@@ -323,7 +323,7 @@
             z-index: 1000;
             display: none;
             width: 380px;
-            height: 650px; /* Increased container height by 50px */
+            height: 650px; /* Increased container height to 650px */
             background: var(--chat--color-background);
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(22, 48, 32, 0.2);
@@ -509,10 +509,6 @@
             font-family: 'Poppins', sans-serif;
             font-size: 14px;
             transition: border-color 0.3s;
-            min-height: 50px; /* Increased minimum height to 50px */
-            height: auto; /* Let it grow if needed */
-            max-height: 120px; /* But not too much */
-            overflow-y: auto; /* Add scrollbar if needed */
         }
 
         .n8n-chat-widget .chat-input textarea:focus {
@@ -537,7 +533,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 50px; /* Match the textarea height */
         }
 
         .n8n-chat-widget .chat-input button:hover {
@@ -753,7 +748,7 @@
                 <div class="chat-interface">
                     <div class="chat-messages"></div>
                     <div class="chat-input">
-                        <textarea placeholder="Type your message here..." rows="2"></textarea>
+                        <textarea placeholder="Type your message here..." rows="1"></textarea>
                         <button type="submit">Send</button>
                     </div>
                     <div class="chat-footer">
@@ -786,12 +781,6 @@
             const messagesContainer = chatContainer.querySelector('.chat-messages');
             const textarea = chatContainer.querySelector('textarea');
             const sendButton = chatContainer.querySelector('button[type="submit"]');
-
-            // Auto-resize textarea as user types
-            textarea.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
-            });
 
             // Generate UUID
             function generateUUID() {
@@ -910,7 +899,6 @@
                 if (message) {
                     sendMessage(message);
                     textarea.value = '';
-                    textarea.style.height = '50px'; // Reset height after sending
                 }
             });
             
@@ -921,7 +909,6 @@
                     if (message) {
                         sendMessage(message);
                         textarea.value = '';
-                        textarea.style.height = '50px'; // Reset height after sending
                     }
                 }
             });
