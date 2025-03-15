@@ -313,7 +313,7 @@
         <div class="brand-header">
             <img src="${config.branding.logo}" alt="${config.branding.name}">
             <span>${config.branding.name}</span>
-            <button class="close-button">×</button>
+            <button class="close-button" type="button" aria-label="Close chat">×</button>
         </div>
         <div class="chat-messages"></div>
         <div class="chat-footer">
@@ -341,6 +341,16 @@
     const messagesContainer = chatContainer.querySelector('.chat-messages');
     const textarea = chatContainer.querySelector('textarea');
     const sendButton = chatContainer.querySelector('button[type="submit"]');
+    const closeButton = chatContainer.querySelector('.close-button');
+
+    // Fix: Add event listener for close button
+    if (closeButton) {
+        closeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            chatContainer.classList.remove('open');
+        });
+    }
 
     // Auto-resize textarea as user types
     textarea.addEventListener('input', function() {
@@ -478,14 +488,6 @@
             // Start a conversation immediately when opening the chat
             startNewConversation();
         }
-    });
-
-    // Add close button handlers
-    const closeButtons = chatContainer.querySelectorAll('.close-button');
-    closeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            chatContainer.classList.remove('open');
-        });
     });
 
     // For the webpage CTA button
