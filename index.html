@@ -295,6 +295,42 @@
         #script-status {
             font-weight: bold;
         }
+        
+        .status-success {
+            color: green;
+        }
+        
+        .status-error {
+            color: #cc0000;
+        }
+        
+        .troubleshooting {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #fffaf0;
+            border-radius: 5px;
+            border-left: 4px solid #ffa500;
+        }
+        
+        .troubleshooting h2 {
+            margin-top: 0;
+            color: #d57d00;
+        }
+        
+        .troubleshooting ul {
+            padding-left: 20px;
+        }
+        
+        .troubleshooting li {
+            margin-bottom: 10px;
+        }
+        
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
     </style>
 </head>
 <body>
@@ -303,8 +339,20 @@
     
     <div class="debug-info">
         <h2>Debug Information</h2>
-        <p>Script status: <span id="script-status">Loading...</span></p>
+        <p>Widget status: <span id="script-status">Loading...</span></p>
+        <p>Server status: <span id="server-status">Checking...</span></p>
         <p>If you don't see the chat widget, please check the browser console for errors (F12).</p>
+    </div>
+    
+    <div class="troubleshooting">
+        <h2>Troubleshooting Guide</h2>
+        <p>If you're experiencing issues with the chat widget:</p>
+        <ul>
+            <li><strong>500 Server Error</strong>: The webhook URL is returning a server error (HTTP 500). Please verify that the n8n instance at <code>yoreezy.app.n8n.cloud</code> is running properly and that the webhook is correctly configured.</li>
+            <li><strong>Webhook Configuration</strong>: Verify that the webhook expects the payload format shown in the console logs.</li>
+            <li><strong>CORS Issues</strong>: Make sure the n8n webhook has CORS enabled for this domain.</li>
+            <li><strong>N8N Workflow</strong>: Check that the webhook workflow in n8n is properly configured to respond to the "loadPreviousSession" action.</li>
+        </ul>
     </div>
 
     <script>
@@ -339,6 +387,13 @@
             
             const config = window.ChatWidgetConfig;
             let currentSessionId = '';
+            
+            // Update widget status
+            const scriptStatus = document.getElementById('script-status');
+            const serverStatus = document.getElementById('server-status');
+            
+            scriptStatus.textContent = 'Initialized Successfully';
+            scriptStatus.className = 'status-success';
 
             // Create widget container
             const widgetContainer = document.createElement('div');
@@ -408,6 +463,24 @@
             const textarea = chatContainer.querySelector('textarea');
             const sendButton = chatContainer.querySelector('button[type="submit"]');
 
+            // Check server status with a test request
+            fetch(config.webhook.url, {
+                method: 'HEAD',
+                cache: 'no-cache'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                }
+                serverStatus.textContent = 'Online';
+                serverStatus.className = 'status-success';
+            })
+            .catch(error => {
+                console.error('Server health check failed:', error);
+                serverStatus.textContent = `Error: ${error.message}`;
+                serverStatus.className = 'status-error';
+            });
+
             // Generate UUID
             function generateUUID() {
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -445,7 +518,11 @@
             
                     console.log('Response status:', response.status);
                     if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
+                        if (response.status === 500) {
+                            throw new Error(`Server error (500). The n8n webhook might not be configured correctly.`);
+                        } else {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
                     }
             
                     const responseText = await response.text();
@@ -466,9 +543,13 @@
                     console.error('Error in startNewConversation:', error);
                     const errorDiv = document.createElement('div');
                     errorDiv.className = 'chat-message bot';
-                    errorDiv.textContent = "Sorry, I couldn't connect to the server. Please try again or type your message below.";
+                    errorDiv.textContent = "There was an error connecting to the server. This is likely because the n8n webhook is not properly configured or is offline. Please check the troubleshooting guide for more information.";
                     messagesContainer.appendChild(errorDiv);
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    
+                    // Update server status indicator
+                    serverStatus.textContent = 'Error: ' + error.message;
+                    serverStatus.className = 'status-error';
                 }
             }
 
@@ -498,6 +579,10 @@
                         body: JSON.stringify(messageData)
                     });
                     
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    
                     const data = await response.json();
                     
                     const botMessageDiv = document.createElement('div');
@@ -509,7 +594,7 @@
                     console.error('Error:', error);
                     const errorDiv = document.createElement('div');
                     errorDiv.className = 'chat-message bot';
-                    errorDiv.textContent = "Sorry, I encountered an error. Please try again.";
+                    errorDiv.textContent = "Sorry, I encountered an error communicating with the server. Please try again later.";
                     messagesContainer.appendChild(errorDiv);
                 }
             }
@@ -546,10 +631,6 @@
                     chatContainer.classList.remove('open');
                 });
             });
-
-            // Update status
-            document.getElementById('script-status').textContent = 'Chat widget loaded successfully!';
-            document.getElementById('script-status').style.color = 'green';
             
             console.log('Chat widget initialized successfully');
         });
