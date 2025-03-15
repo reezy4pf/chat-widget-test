@@ -85,68 +85,11 @@
             color: white;
         }
 
-        .n8n-chat-widget .new-conversation {
-            padding: 20px;
-            text-align: center;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .n8n-chat-widget .welcome-text {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--chat--color-font);
-            margin-bottom: 24px;
-            line-height: 1.3;
-        }
-
-        .n8n-chat-widget .new-chat-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            padding: 16px 24px;
-            background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: transform 0.3s;
-            font-weight: 500;
-            font-family: inherit;
-            margin-bottom: 12px;
-        }
-
-        .n8n-chat-widget .new-chat-btn:hover {
-            transform: scale(1.02);
-        }
-
-        .n8n-chat-widget .message-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        .n8n-chat-widget .response-text {
-            font-size: 14px;
-            color: var(--chat--color-font);
-            opacity: 0.7;
-            margin: 0;
-        }
-
         .n8n-chat-widget .chat-interface {
-            display: none;
+            display: flex;
             flex-direction: column;
             height: 100%;
             overflow: hidden;
-        }
-
-        .n8n-chat-widget .chat-interface.active {
-            display: flex;
         }
 
         .n8n-chat-widget .chat-messages {
@@ -323,7 +266,7 @@
             welcomeText: 'Hello! I\'m Simba, your friendly AI assistant. How can I help you today?',
             responseTimeText: 'I usually respond in a few seconds.',
             poweredBy: {
-                text: 'Tour Kenya with Magsons Adventures',
+                text: '',
                 link: 'https://magsonsadventures.com/tour-packages/'
             }
         },
@@ -363,28 +306,7 @@
     const chatContainer = document.createElement('div');
     chatContainer.className = `chat-container${config.style.position === 'left' ? ' position-left' : ''}`;
     
-    // Create initial view with welcome message
-    const initialView = document.createElement('div');
-    initialView.className = 'initial-view';
-    initialView.innerHTML = `
-        <div class="brand-header">
-            <img src="${config.branding.logo}" alt="${config.branding.name}">
-            <span>${config.branding.name}</span>
-            <button class="close-button">×</button>
-        </div>
-        <div class="new-conversation">
-            <h2 class="welcome-text">${config.branding.welcomeText}</h2>
-            <button class="new-chat-btn">
-                <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/>
-                </svg>
-                Chat with Simba
-            </button>
-            <p class="response-text">${config.branding.responseTimeText}</p>
-        </div>
-    `;
-
-    // Create chat interface
+    // Create chat interface directly (removed welcome page)
     const chatInterface = document.createElement('div');
     chatInterface.className = 'chat-interface';
     chatInterface.innerHTML = `
@@ -403,7 +325,6 @@
         </div>
     `;
     
-    chatContainer.appendChild(initialView);
     chatContainer.appendChild(chatInterface);
     
     const toggleButton = document.createElement('button');
@@ -417,9 +338,6 @@
     widgetContainer.appendChild(toggleButton);
     document.body.appendChild(widgetContainer);
 
-    const newChatBtn = chatContainer.querySelector('.new-chat-btn');
-    const initialViewEl = chatContainer.querySelector('.initial-view');
-    const chatInterfaceEl = chatContainer.querySelector('.chat-interface');
     const messagesContainer = chatContainer.querySelector('.chat-messages');
     const textarea = chatContainer.querySelector('textarea');
     const sendButton = chatContainer.querySelector('button[type="submit"]');
@@ -449,9 +367,6 @@
                 userId: ""
             }
         }];
-    
-        initialViewEl.style.display = 'none';
-        chatInterfaceEl.style.display = 'flex';
     
         try {
             console.log('Sending request to:', config.webhook.url);
@@ -535,8 +450,6 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
     }
-
-    newChatBtn.addEventListener('click', startNewConversation);
     
     sendButton.addEventListener('click', () => {
         const message = textarea.value.trim();
@@ -561,10 +474,9 @@
     
     toggleButton.addEventListener('click', () => {
         chatContainer.classList.toggle('open');
-        if (chatContainer.classList.contains('open')) {
-            // Reset state - show initial view first
-            initialViewEl.style.display = 'block';
-            chatInterfaceEl.style.display = 'none';
+        if (chatContainer.classList.contains('open') && !currentSessionId) {
+            // Start a conversation immediately when opening the chat
+            startNewConversation();
         }
     });
 
@@ -575,4 +487,12 @@
             chatContainer.classList.remove('open');
         });
     });
+
+    // For the webpage CTA button
+    window.startChatWithSimba = function() {
+        chatContainer.classList.add('open');
+        if (!currentSessionId) {
+            startNewConversation();
+        }
+    };
 })();
