@@ -403,7 +403,7 @@
                 welcomeText: 'Hi 👋, how can we help?',
                 responseTimeText: 'We typically respond right away',
                 poweredBy: {
-                    text: '', // Removed the "Tour Kenya With Magsons Adventures" text
+                    text: '', 
                     link: 'https://magsonsadventures.com/tour-packages/'
                 }
             },
@@ -424,23 +424,14 @@
             const openChatBtn = document.getElementById('open-chat-btn');
             if (openChatBtn) {
                 openChatBtn.addEventListener('click', function() {
-                    // Find the chat container and toggle button in the DOM
-                    const chatContainer = document.querySelector('.n8n-chat-widget .chat-container');
-                    const chatInterface = document.querySelector('.n8n-chat-widget .chat-interface');
-                    const initialView = document.querySelector('.n8n-chat-widget .initial-view');
-                    
-                    if (chatContainer && chatInterface && initialView) {
-                        // Open the chat
-                        chatContainer.classList.add('open');
-                        
-                        // Start a new conversation
-                        initialView.style.display = 'none';
-                        chatInterface.style.display = 'flex';
-                        
-                        // Trigger the newChatBtn click event to start a conversation
-                        const newChatBtn = document.querySelector('.n8n-chat-widget .new-chat-btn');
-                        if (newChatBtn) {
-                            newChatBtn.click();
+                    // Directly call the startChatWithSimba function
+                    if (window.startChatWithSimba) {
+                        window.startChatWithSimba();
+                    } else {
+                        // Fallback: manually open chat and start conversation
+                        const chatToggle = document.querySelector('.n8n-chat-widget .chat-toggle');
+                        if (chatToggle) {
+                            chatToggle.click();
                         }
                     }
                 });
