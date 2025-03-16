@@ -447,22 +447,20 @@
     async function startNewConversation() {
         currentSessionId = generateUUID();
         
-        // Format the data exactly as n8n expects it
-        const data = {
-            sessionId: currentSessionId,
+        // Using the original format as it was working before
+        const data = [{
             action: "loadPreviousSession",
+            sessionId: currentSessionId,
             route: config.webhook.route,
             metadata: {
                 userId: ""
             }
-        };
+        }];
     
         initialViewEl.style.display = 'none';
         chatInterfaceEl.style.display = 'flex';
     
         try {
-            console.log('Sending request to:', config.webhook.url);
-            console.log('Request payload:', JSON.stringify(data));
             const response = await fetch(config.webhook.url, {
                 method: 'POST',
                 headers: {
@@ -471,15 +469,12 @@
                 body: JSON.stringify(data)
             });
     
-            console.log('Response status:', response.status);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
     
             const responseText = await response.text();
-            console.log('Raw response:', responseText);
             
-            // Handle empty responses more gracefully
             if (!responseText || responseText.trim() === '') {
                 throw new Error('Empty response received');
             }
@@ -488,7 +483,6 @@
             try {
                 responseData = JSON.parse(responseText);
             } catch (parseError) {
-                console.error('JSON parse error:', parseError);
                 throw new Error('Invalid JSON response');
             }
     
@@ -514,16 +508,16 @@
     async function sendMessage(message) {
         if (!message || message.trim() === '') return;
         
-        // Format the data exactly as n8n expects it
-        const messageData = {
-            sessionId: currentSessionId,
+        // Using the original format as it was working before
+        const messageData = [{
             action: "sendMessage",
+            sessionId: currentSessionId,
             route: config.webhook.route,
             chatInput: message,
             metadata: {
                 userId: ""
             }
-        };
+        }];
 
         const userMessageDiv = document.createElement('div');
         userMessageDiv.className = 'chat-message user';
@@ -532,9 +526,6 @@
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
         try {
-            console.log('Sending message to webhook:', config.webhook.url);
-            console.log('Message payload:', JSON.stringify(messageData));
-            
             const response = await fetch(config.webhook.url, {
                 method: 'POST',
                 headers: {
@@ -543,14 +534,11 @@
                 body: JSON.stringify(messageData)
             });
             
-            console.log('Response status:', response.status);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             
             const responseText = await response.text();
-            console.log('Raw response:', responseText);
-            
             if (!responseText || responseText.trim() === '') {
                 throw new Error('Empty response received');
             }
@@ -558,9 +546,7 @@
             let data;
             try {
                 data = JSON.parse(responseText);
-                console.log('Parsed response data:', data);
             } catch (parseError) {
-                console.error('JSON parse error:', parseError);
                 throw new Error('Invalid JSON response');
             }
             
