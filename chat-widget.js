@@ -446,14 +446,16 @@
 
     async function startNewConversation() {
         currentSessionId = generateUUID();
-        const data = [{
-            action: "loadPreviousSession",
+        
+        // Format the data exactly as n8n expects it
+        const data = {
             sessionId: currentSessionId,
+            action: "loadPreviousSession",
             route: config.webhook.route,
             metadata: {
                 userId: ""
             }
-        }];
+        };
     
         initialViewEl.style.display = 'none';
         chatInterfaceEl.style.display = 'flex';
@@ -512,9 +514,10 @@
     async function sendMessage(message) {
         if (!message || message.trim() === '') return;
         
+        // Format the data exactly as n8n expects it
         const messageData = {
-            action: "sendMessage",
             sessionId: currentSessionId,
+            action: "sendMessage",
             route: config.webhook.route,
             chatInput: message,
             metadata: {
@@ -529,6 +532,9 @@
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
         try {
+            console.log('Sending message to webhook:', config.webhook.url);
+            console.log('Message payload:', JSON.stringify(messageData));
+            
             const response = await fetch(config.webhook.url, {
                 method: 'POST',
                 headers: {
@@ -537,11 +543,14 @@
                 body: JSON.stringify(messageData)
             });
             
+            console.log('Response status:', response.status);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             
             const responseText = await response.text();
+            console.log('Raw response:', responseText);
+            
             if (!responseText || responseText.trim() === '') {
                 throw new Error('Empty response received');
             }
@@ -549,6 +558,7 @@
             let data;
             try {
                 data = JSON.parse(responseText);
+                console.log('Parsed response data:', data);
             } catch (parseError) {
                 console.error('JSON parse error:', parseError);
                 throw new Error('Invalid JSON response');
