@@ -25,8 +25,6 @@
             border: 1px solid rgba(255, 218, 148, 0.2);
             overflow: hidden;
             font-family: inherit;
-            display: flex;
-            flex-direction: column;
         }
 
         .n8n-chat-widget .chat-container.position-left {
@@ -85,11 +83,74 @@
             color: white;
         }
 
-        .n8n-chat-widget .chat-interface {
+        .n8n-chat-widget .initial-view {
             display: flex;
             flex-direction: column;
             height: 100%;
+        }
+
+        .n8n-chat-widget .new-conversation {
+            padding: 20px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .n8n-chat-widget .welcome-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--chat--color-font);
+            margin-bottom: 24px;
+            line-height: 1.3;
+        }
+
+        .n8n-chat-widget .new-chat-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.3s;
+            font-weight: 500;
+            font-family: inherit;
+            margin-bottom: 12px;
+        }
+
+        .n8n-chat-widget .new-chat-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .n8n-chat-widget .message-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .n8n-chat-widget .response-text {
+            font-size: 14px;
+            color: var(--chat--color-font);
+            opacity: 0.7;
+            margin: 0;
+        }
+
+        .n8n-chat-widget .chat-interface {
+            display: none;
+            flex-direction: column;
+            height: 100%;
             overflow: hidden;
+        }
+
+        .n8n-chat-widget .chat-interface.active {
+            display: flex;
         }
 
         .n8n-chat-widget .chat-messages {
@@ -266,7 +327,7 @@
             welcomeText: 'Hello! I\'m Simba, your friendly AI assistant. How can I help you today?',
             responseTimeText: 'I usually respond in a few seconds.',
             poweredBy: {
-                text: '',
+                text: 'Tour Kenya with Magsons Adventures',
                 link: 'https://magsonsadventures.com/tour-packages/'
             }
         },
@@ -306,14 +367,35 @@
     const chatContainer = document.createElement('div');
     chatContainer.className = `chat-container${config.style.position === 'left' ? ' position-left' : ''}`;
     
-    // Create chat interface directly
+    // Create initial view with welcome message
+    const initialView = document.createElement('div');
+    initialView.className = 'initial-view';
+    initialView.innerHTML = `
+        <div class="brand-header">
+            <img src="${config.branding.logo}" alt="${config.branding.name}">
+            <span>${config.branding.name}</span>
+            <button class="close-button" type="button">×</button>
+        </div>
+        <div class="new-conversation">
+            <h2 class="welcome-text">${config.branding.welcomeText}</h2>
+            <button class="new-chat-btn" type="button">
+                <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/>
+                </svg>
+                Chat with Simba
+            </button>
+            <p class="response-text">${config.branding.responseTimeText}</p>
+        </div>
+    `;
+
+    // Create chat interface
     const chatInterface = document.createElement('div');
     chatInterface.className = 'chat-interface';
     chatInterface.innerHTML = `
         <div class="brand-header">
             <img src="${config.branding.logo}" alt="${config.branding.name}">
             <span>${config.branding.name}</span>
-            <button class="close-button" type="button" aria-label="Close chat">×</button>
+            <button class="close-button" type="button">×</button>
         </div>
         <div class="chat-messages"></div>
         <div class="chat-footer">
@@ -325,9 +407,11 @@
         </div>
     `;
     
+    chatContainer.appendChild(initialView);
     chatContainer.appendChild(chatInterface);
     
     const toggleButton = document.createElement('button');
+    toggleButton.type = "button";
     toggleButton.className = `chat-toggle${config.style.position === 'left' ? ' position-left' : ''}`;
     toggleButton.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -338,19 +422,12 @@
     widgetContainer.appendChild(toggleButton);
     document.body.appendChild(widgetContainer);
 
+    const newChatBtn = chatContainer.querySelector('.new-chat-btn');
+    const initialViewEl = chatContainer.querySelector('.initial-view');
+    const chatInterfaceEl = chatContainer.querySelector('.chat-interface');
     const messagesContainer = chatContainer.querySelector('.chat-messages');
     const textarea = chatContainer.querySelector('textarea');
     const sendButton = chatContainer.querySelector('button[type="submit"]');
-    const closeButton = chatContainer.querySelector('.close-button');
-
-    // Fix: Add event listener for close button
-    if (closeButton) {
-        closeButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            chatContainer.classList.remove('open');
-        });
-    }
 
     // Auto-resize textarea as user types
     textarea.addEventListener('input', function() {
@@ -378,6 +455,9 @@
             }
         }];
     
+        initialViewEl.style.display = 'none';
+        chatInterfaceEl.style.display = 'flex';
+    
         try {
             console.log('Sending request to:', config.webhook.url);
             console.log('Request payload:', JSON.stringify(data));
@@ -396,8 +476,19 @@
     
             const responseText = await response.text();
             console.log('Raw response:', responseText);
-            const responseData = JSON.parse(responseText);
-            console.log('Response data:', responseData);
+            
+            // Handle empty responses more gracefully
+            if (!responseText || responseText.trim() === '') {
+                throw new Error('Empty response received');
+            }
+            
+            let responseData;
+            try {
+                responseData = JSON.parse(responseText);
+            } catch (parseError) {
+                console.error('JSON parse error:', parseError);
+                throw new Error('Invalid JSON response');
+            }
     
             if (!responseData || (!responseData.response && !Array.isArray(responseData))) {
                 throw new Error('Invalid response format: missing "response" field');
@@ -419,6 +510,8 @@
     }
 
     async function sendMessage(message) {
+        if (!message || message.trim() === '') return;
+        
         const messageData = {
             action: "sendMessage",
             sessionId: currentSessionId,
@@ -444,15 +537,41 @@
                 body: JSON.stringify(messageData)
             });
             
-            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            
+            const responseText = await response.text();
+            if (!responseText || responseText.trim() === '') {
+                throw new Error('Empty response received');
+            }
+            
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (parseError) {
+                console.error('JSON parse error:', parseError);
+                throw new Error('Invalid JSON response');
+            }
             
             const botMessageDiv = document.createElement('div');
             botMessageDiv.className = 'chat-message bot';
-            botMessageDiv.textContent = Array.isArray(data) ? data[0].output : data.output;
+            
+            // Handle different response formats
+            let botResponse = '';
+            if (Array.isArray(data)) {
+                botResponse = data[0].output || data[0].response || "I'd be happy to help with that!";
+            } else if (typeof data === 'object') {
+                botResponse = data.output || data.response || "I'd be happy to help with that!";
+            } else {
+                botResponse = "I'd be happy to help with that!";
+            }
+            
+            botMessageDiv.textContent = botResponse;
             messagesContainer.appendChild(botMessageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error in sendMessage:', error);
             const errorDiv = document.createElement('div');
             errorDiv.className = 'chat-message bot';
             errorDiv.textContent = "I'd be happy to help with that! Kenya offers amazing wildlife experiences. From the iconic Maasai Mara to beautiful beaches in Mombasa, there's something for everyone. Would you like to hear more about our popular safari packages?";
@@ -460,6 +579,8 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
     }
+
+    newChatBtn.addEventListener('click', startNewConversation);
     
     sendButton.addEventListener('click', () => {
         const message = textarea.value.trim();
@@ -484,16 +605,29 @@
     
     toggleButton.addEventListener('click', () => {
         chatContainer.classList.toggle('open');
-        if (chatContainer.classList.contains('open') && !currentSessionId) {
-            // Start a conversation immediately when opening the chat
-            startNewConversation();
+        if (chatContainer.classList.contains('open')) {
+            // Reset state - show initial view first
+            initialViewEl.style.display = 'block';
+            chatInterfaceEl.style.display = 'none';
         }
     });
 
-    // For the webpage CTA button
-    window.startChatWithSimba = function() {
+    // Add close button handlers with improved event binding
+    const closeButtons = chatContainer.querySelectorAll('.close-button');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            chatContainer.classList.remove('open');
+        });
+    });
+    
+    // Expose a global method to open the chat programmatically
+    window.openChat = function() {
         chatContainer.classList.add('open');
-        if (!currentSessionId) {
+        if (!chatInterfaceEl.classList.contains('active')) {
+            initialViewEl.style.display = 'none';
+            chatInterfaceEl.style.display = 'flex';
             startNewConversation();
         }
     };
