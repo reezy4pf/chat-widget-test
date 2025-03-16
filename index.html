@@ -4,18 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magsons Adventures - Safari Experience</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --primary-color: #163020;
             --secondary-color: #D4A373;
-            --light-accent: #f5f2e7;
-            --dark-text: #333;
-            --light-text: #fff;
-            --bg-light: #ffffff;
-            --section-padding: 80px 0;
+            --text-color: #333;
+            --light-color: #FEFAE0;
+            --accent-color: #DDA15E;
+            --dark-text: #262626;
+            --white: #ffffff;
         }
         
         * {
@@ -26,9 +24,9 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            color: var(--dark-text);
             line-height: 1.6;
-            background-color: var(--bg-light);
+            color: var(--text-color);
+            overflow-x: hidden;
         }
         
         h1, h2, h3, h4 {
@@ -41,151 +39,166 @@
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 15px;
         }
         
         /* Hero Section */
         .hero {
-            position: relative;
-            height: 85vh;
-            background: linear-gradient(rgba(22, 48, 32, 0.7), rgba(22, 48, 32, 0.7)), url('https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2068&q=80');
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: var(--white);
+            min-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: var(--light-text);
-            margin-bottom: 40px;
+            position: relative;
         }
         
         .hero-content {
             max-width: 800px;
             padding: 20px;
+            z-index: 1;
         }
         
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 20px;
-            color: var(--light-text);
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         
         .hero p {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             margin-bottom: 30px;
+            color: var(--light-color);
         }
         
         .btn {
             display: inline-block;
+            background: var(--secondary-color);
+            color: var(--primary-color);
             padding: 12px 30px;
-            background-color: var(--secondary-color);
-            color: var(--light-text);
-            text-decoration: none;
-            font-weight: 500;
-            border-radius: 4px;
-            transition: all 0.3s ease;
             border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
         
         .btn:hover {
-            background-color: #c0915f;
-            transform: translateY(-2px);
+            background: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
         
-        /* About Simba Section */
-        .about-simba {
-            padding: var(--section-padding);
-            background-color: var(--light-accent);
+        /* About Section */
+        .about {
+            padding: 80px 0;
+            background-color: var(--light-color);
         }
         
-        .about-simba-inner {
+        .about-content {
             display: flex;
             align-items: center;
-            gap: 60px;
+            justify-content: space-between;
+            gap: 40px;
         }
         
-        .about-simba-content {
+        .about-text {
             flex: 1;
         }
         
-        .about-simba-image {
+        .about-image {
             flex: 1;
-            text-align: center;
-        }
-        
-        .about-simba-image img {
-            max-width: 100%;
-            height: auto;
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
         
-        .about-simba h2 {
+        .about-image img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.5s ease;
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .about h2 {
             font-size: 2.5rem;
             margin-bottom: 20px;
             position: relative;
-            display: inline-block;
+            padding-bottom: 15px;
         }
         
-        .about-simba h2::after {
+        .about h2:after {
             content: '';
             position: absolute;
+            bottom: 0;
             left: 0;
-            bottom: -10px;
             width: 60px;
-            height: 4px;
+            height: 3px;
             background-color: var(--secondary-color);
         }
         
-        .about-simba p {
+        .about p {
             margin-bottom: 20px;
             font-size: 1.1rem;
         }
         
         /* Features Section */
         .features {
-            padding: var(--section-padding);
-            background-color: #fff;
+            padding: 80px 0;
+            background-color: var(--white);
         }
         
-        .features h2 {
+        .section-title {
             text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
             font-size: 2.5rem;
-            margin-bottom: 60px;
+            margin-bottom: 15px;
             position: relative;
             display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
+            padding-bottom: 15px;
         }
         
-        .features h2::after {
+        .section-title h2:after {
             content: '';
             position: absolute;
+            bottom: 0;
             left: 50%;
-            bottom: -15px;
-            width: 60px;
-            height: 4px;
-            background-color: var(--secondary-color);
             transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary-color);
         }
         
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
+            gap: 30px;
         }
         
         .feature-card {
-            background: #f9f9f9;
-            padding: 30px;
+            background: var(--white);
             border-radius: 10px;
+            padding: 30px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
         }
         
         .feature-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid var(--secondary-color);
         }
         
         .feature-icon {
@@ -197,140 +210,124 @@
         .feature-card h3 {
             font-size: 1.5rem;
             margin-bottom: 15px;
-            color: var(--primary-color);
-        }
-        
-        .feature-card p {
-            color: var(--dark-text);
         }
         
         /* CTA Section */
         .cta {
-            padding: var(--section-padding);
-            background-color: var(--primary-color);
-            color: var(--light-text);
+            padding: 80px 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
             text-align: center;
+            color: var(--white);
         }
         
         .cta h2 {
             font-size: 2.5rem;
+            color: var(--white);
             margin-bottom: 20px;
-            color: var(--light-text);
         }
         
         .cta p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 30px;
-        }
-        
-        .cta .btn {
-            background-color: var(--secondary-color);
-            color: var(--light-text);
             font-size: 1.1rem;
-            padding: 15px 40px;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         /* Footer */
         footer {
-            padding: 40px 0;
-            background-color: #0c1a10;
-            color: var(--light-text);
-            text-align: center;
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 50px 0 20px;
         }
         
-        footer p {
-            margin-bottom: 20px;
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
         }
         
-        .social-links {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
         }
         
-        .social-links a {
-            color: var(--light-text);
-            margin: 0 10px;
-            font-size: 1.5rem;
+        .footer-links h3 {
+            color: var(--white);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--light-color);
+            text-decoration: none;
             transition: color 0.3s ease;
         }
         
-        .social-links a:hover {
+        .footer-links a:hover {
             color: var(--secondary-color);
         }
         
-        /* Debug Info */
-        .debug-info {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-        }
-        
-        .debug-info h2 {
-            margin-top: 0;
-        }
-        
-        .status-success {
-            color: green;
-            font-weight: bold;
-        }
-        
-        .status-error {
-            color: #cc0000;
-            font-weight: bold;
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         /* Responsive Design */
-        @media screen and (max-width: 992px) {
-            .about-simba-inner {
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content {
                 flex-direction: column;
             }
             
-            .hero h1 {
-                font-size: 2.8rem;
-            }
-        }
-        
-        @media screen and (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.2rem;
+            .about-image {
+                order: -1;
             }
             
-            .btn {
-                padding: 10px 25px;
-            }
-            
-            .about-simba h2, .features h2, .cta h2 {
-                font-size: 2rem;
+            .feature-card {
+                padding: 20px;
             }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Embark on an Unforgettable Kenyan Safari</h1>
-            <p>Experience the magic of Kenya with personalized safari adventures and 24/7 assistance from Simba, your AI safari guide</p>
-            <a href="#meet-simba" class="btn">Discover More</a>
+            <h1>Experience the Magic of Kenya's Wildlife</h1>
+            <p>Discover personalized safari experiences with Magsons Adventures. Our AI assistant, Simba, is available 24/7 to plan your perfect journey.</p>
+            <a href="#" class="btn chat-with-simba">Chat with Simba</a>
         </div>
     </section>
     
     <!-- About Simba Section -->
-    <section class="about-simba" id="meet-simba">
+    <section class="about">
         <div class="container">
-            <div class="about-simba-inner">
-                <div class="about-simba-content">
-                    <h2>Meet Simba: Your Personal AI Safari Guide</h2>
-                    <p>Introducing Simba to Magsons Adventures is a pioneering move that sets us apart in the tourism industry. While many companies still rely on traditional methods, we're offering something incredibly unique: a personalized, 24/7 AI assistant dedicated to crafting your dream safari.</p>
-                    <p>Simba provides immediate, expert advice on safari options, custom itinerary suggestions, and real-time pricing - all at your fingertips, any time of day or night. No more waiting for email responses or navigating complex websites.</p>
-                    <p>Whether you're looking for wildlife encounters, cultural experiences, or adventure activities, Simba can help you plan the perfect Kenyan safari tailored to your preferences and budget.</p>
-                    <p>Try chatting with Simba now by clicking the chat icon in the bottom right corner!</p>
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Meet Simba, Your AI Safari Guide</h2>
+                    <p>Simba is our innovative AI assistant, designed to provide personalized guidance for your African safari adventure. Available 24/7, Simba offers real-time assistance to help you plan the perfect safari experience.</p>
+                    <p>Whether you're looking for wildlife encounters, cultural experiences, or relaxing beach getaways, Simba has all the information you need about Kenya's diverse destinations.</p>
+                    <a href="#" class="btn chat-with-simba">Ask Simba a Question</a>
                 </div>
-                <div class="about-simba-image">
-                    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="Lion in Kenyan Safari">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="AI Safari Assistant">
                 </div>
             </div>
         </div>
@@ -339,37 +336,25 @@
     <!-- Features Section -->
     <section class="features">
         <div class="container">
-            <h2>Why Choose Magsons Adventures</h2>
+            <div class="section-title">
+                <h2>Why Choose Magsons Adventures</h2>
+                <p>We combine cutting-edge technology with local expertise to create unforgettable safari experiences</p>
+            </div>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">🌍</div>
-                    <h3>24/7 AI Assistance</h3>
-                    <p>Chat with Simba anytime, day or night, for instant answers to all your safari questions and personalized recommendations.</p>
+                    <div class="feature-icon"><i class="fas fa-clock"></i></div>
+                    <h3>24/7 Assistance</h3>
+                    <p>Simba is always available to answer your questions and provide guidance, no matter what time zone you're in.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🦁</div>
-                    <h3>Expert Local Knowledge</h3>
-                    <p>Benefit from our deep understanding of Kenya's wildlife, landscapes, and culture for an authentic safari experience.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✨</div>
+                    <div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div>
                     <h3>Personalized Itineraries</h3>
-                    <p>Every safari is uniquely crafted to match your interests, timeframe, and budget for a truly custom adventure.</p>
+                    <p>Get customized safari plans based on your interests, budget, and travel dates - all created with the help of AI.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🛣️</div>
-                    <h3>Seamless Planning</h3>
-                    <p>From initial inquiry to your return home, enjoy a smooth, hassle-free experience with our dedicated support.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏆</div>
-                    <h3>Premium Experience</h3>
-                    <p>Enjoy high-quality accommodations, experienced guides, and comfortable transportation throughout your journey.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💚</div>
-                    <h3>Sustainable Tourism</h3>
-                    <p>We're committed to environmentally responsible practices that respect wildlife and support local communities.</p>
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h3>Local Expertise</h3>
+                    <p>Behind Simba is a team of experienced local guides who ensure authentic and unforgettable safari experiences.</p>
                 </div>
             </div>
         </div>
@@ -378,32 +363,68 @@
     <!-- CTA Section -->
     <section class="cta">
         <div class="container">
-            <h2>Ready to Plan Your Dream Safari?</h2>
-            <p>Chat with Simba now to explore safari options, get expert advice, and start planning your perfect Kenyan adventure.</p>
-            <button class="btn" id="open-chat-btn">Chat with Simba</button>
+            <h2>Ready to Plan Your Kenyan Safari?</h2>
+            <p>Chat with Simba now to start planning your dream safari adventure. Our AI assistant will help you create the perfect itinerary based on your preferences.</p>
+            <a href="#" class="btn chat-with-simba">Chat with Simba</a>
         </div>
     </section>
     
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2025 Magsons Adventures. All rights reserved.</p>
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">Magsons Adventures</div>
+                    <p>Providing exceptional safari experiences through innovative technology and local expertise.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Safari Packages</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Popular Destinations</h3>
+                    <ul>
+                        <li><a href="#">Maasai Mara</a></li>
+                        <li><a href="#">Amboseli</a></li>
+                        <li><a href="#">Tsavo</a></li>
+                        <li><a href="#">Nairobi</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Connect With Us</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Magsons Adventures. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
+    <!-- Chat Widget Config -->
     <script>
         window.ChatWidgetConfig = {
             webhook: {
-                url: 'https://yoreezy.app.n8n.cloud/webhook/981f76af-574b-49ec-9ac1-82de5d264a1c/chat',
-                route: 'general'
+                url: 'https://n8n.magsonsadventures.com/webhook/chat',
+                route: '/'
             },
             branding: {
                 logo: 'https://magsonsadventures.com/wp-content/uploads/2025/01/cropped-MAGSONS-ADVENTURE-SAFARIS-LOGO-bg-min.png',
                 name: 'Magsons Adventures',
-                welcomeText: 'Hi 👋, how can we help?',
-                responseTimeText: 'We typically respond right away',
+                welcomeText: 'Hello! I\'m Simba, your friendly AI assistant. How can I help you today?',
+                responseTimeText: 'I usually respond in a few seconds.',
                 poweredBy: {
-                    text: '', // Removed the footer text
+                    text: '',
                     link: '#'
                 }
             },
@@ -416,35 +437,22 @@
             }
         };
     </script>
+    
+    <!-- Chat Widget Script -->
     <script src="chat-widget.js"></script>
-
+    
+    <!-- Initialize chat on button click -->
     <script>
-        // Add event listener for the CTA button
         document.addEventListener('DOMContentLoaded', function() {
-            const openChatBtn = document.getElementById('open-chat-btn');
-            if (openChatBtn) {
-                openChatBtn.addEventListener('click', function() {
-                    // Find the chat container and toggle button in the DOM
-                    const chatContainer = document.querySelector('.n8n-chat-widget .chat-container');
-                    const chatInterface = document.querySelector('.n8n-chat-widget .chat-interface');
-                    const initialView = document.querySelector('.n8n-chat-widget .initial-view');
-                    
-                    if (chatContainer && chatInterface && initialView) {
-                        // Open the chat
-                        chatContainer.classList.add('open');
-                        
-                        // Start a new conversation
-                        initialView.style.display = 'none';
-                        chatInterface.style.display = 'flex';
-                        
-                        // Trigger the newChatBtn click event to start a conversation
-                        const newChatBtn = document.querySelector('.n8n-chat-widget .new-chat-btn');
-                        if (newChatBtn) {
-                            newChatBtn.click();
-                        }
+            const chatButtons = document.querySelectorAll('.chat-with-simba');
+            chatButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (window.openChat) {
+                        window.openChat();
                     }
                 });
-            }
+            });
         });
     </script>
 </body>
